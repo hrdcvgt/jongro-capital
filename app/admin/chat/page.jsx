@@ -13,7 +13,7 @@ export default function AdminChat(){
  const [soundEnabled,setSoundEnabled]=useState(false);
  const knownCustomerIds=useRef(null);
  const audioContext=useRef(null);
- const readThrough=useRef({});
+ const readThrough=useRef(null);
 
  function readSaved(){
   try{return JSON.parse(localStorage.getItem("jongro-chat-read")||"{}");}
