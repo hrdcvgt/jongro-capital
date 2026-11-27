@@ -1,5 +1,5 @@
 import {NextResponse} from "next/server";
-import {sign,safeEqual} from "../../../../../../lib/chat";
+import {sign,safeEqual} from "../../../../../lib/chat";
 
 export async function POST(request){
   try{
