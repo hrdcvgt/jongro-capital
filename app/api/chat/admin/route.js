@@ -1,12 +1,15 @@
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 import {NextResponse} from "next/server";
 import {db,adminOk} from "../../../../lib/chat";
 
 export async function GET(request){
-  if(!adminOk(request)) return NextResponse.json({error:"관리자 인증이 필요합니다."},{status:401});
+  if(!adminOk(request)) return NextResponse.json({error:"관리자 인증이 필요합니다."},{status:401,headers:{"Cache-Control":"no-store, no-cache, must-revalidate"}});
   try{
     const conversations=await db("chat_conversations?select=id,customer_name,status,created_at&order=created_at.desc");
     const messages=await db("chat_messages?select=id,conversation_id,sender,message,created_at&order=created_at.asc");
-    return NextResponse.json({conversations,messages});
+    return NextResponse.json({conversations,messages},{headers:{"Cache-Control":"no-store, no-cache, must-revalidate"}});
   }catch(e){return NextResponse.json({error:"상담 목록을 불러오지 못했습니다."},{status:500});}
 }
 export async function POST(request){
