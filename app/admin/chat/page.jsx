@@ -3,7 +3,7 @@ import {useEffect,useState} from "react";
 export default function AdminChat(){
  const [password,setPassword]=useState(""),[logged,setLogged]=useState(false),[conversations,setConversations]=useState([]),[messages,setMessages]=useState([]),[selected,setSelected]=useState(""),[draft,setDraft]=useState(""),[error,setError]=useState("");
  async function load(){const r=await fetch("/api/chat/admin",{cache:"no-store"});const d=await r.json();if(!r.ok){setLogged(false);return;}setConversations(d.conversations||[]);setMessages(d.messages||[]);}
- useEffect(()=>{let t;if(logged){load();t=setInterval(load,2500);}return()=>clearInterval(t);},[logged]);
+ useEffect(()=>{fetch("/api/chat/admin",{cache:"no-store"}).then(r=>{if(r.ok)setLogged(true)}).catch(()=>{});},[]);\n useEffect(()=>{let t;if(logged){load();t=setInterval(load,2500);}return()=>clearInterval(t);},[logged]);
  async function login(e){e.preventDefault();setError("");const r=await fetch("/api/chat/admin/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({password})});const d=await r.json();if(!r.ok){setError(d.error);return;}setLogged(true);setPassword("");}
  async function reply(e){e.preventDefault();if(!draft.trim()||!selected)return;const r=await fetch("/api/chat/admin",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:selected,message:draft})});const d=await r.json();if(!r.ok){setError(d.error);return;}setDraft("");load();}
  async function logout(){await fetch("/api/chat/admin/logout",{method:"POST"});setLogged(false);}
