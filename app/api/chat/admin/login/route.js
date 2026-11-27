@@ -9,7 +9,7 @@ export async function POST(request){
     if(!process.env.CHAT_SESSION_SECRET) return NextResponse.json({error:"관리자 인증 설정이 필요합니다."},{status:503});
     const issued=String(Date.now());
     const response=NextResponse.json({ok:true});
-    response.cookies.set("jongro_admin",issued+"."+sign(issued),{httpOnly:true,secure:process.env.NODE_ENV==="production",sameSite:"strict",path:"/admin",maxAge:43200});
+    response.cookies.set("jongro_admin",issued+"."+sign(issued),{httpOnly:true,secure:process.env.NODE_ENV==="production",sameSite:"strict",path:"/",maxAge:43200});
     return response;
   }catch(e){return NextResponse.json({error:"로그인에 실패했습니다."},{status:500});}
 }
